@@ -1,6 +1,7 @@
 require.config({
     paths: {
         zepto: 'lib/zepto-min',
+        hammer: 'lib/hammer-min',
         underscore: 'lib/underscore-min',
         backbone: 'lib/backbone-min',
         baseview: 'base/BaseView',
@@ -8,9 +9,18 @@ require.config({
     },
 
     shim: {
+        zepto: { 
+            exports: "$"
+        },
+
         underscore: { 
             deps: ['zepto'],
             exports: "_"
+        },
+
+        hammer: { 
+            deps: ['zepto'],
+            exports: "Hammer"
         },
 
         backbone: {
