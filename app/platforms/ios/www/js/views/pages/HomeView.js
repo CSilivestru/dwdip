@@ -12,9 +12,7 @@ define([
     },
 
     handleSwipeDown: function(e) {
-        $("#findContainer").addClass("half-height-extended");
-        $(".icon-arrow-down").removeClass("icon-arrow-down")
-            .addClass("icon-arrow-up");
+        console.log("Swipe down detected");
     },
 
     render: function(){

@@ -2,8 +2,9 @@ define([
    'zepto',
    'underscore',
    'backbone',
-   'text!templates/partials/loading.html'
-], function($, _, Backbone, loadingTemplate){
+   'text!templates/partials/loading.html',
+   'hammer'
+], function($, _, Backbone, loadingTemplate, Hammer){
     var BaseView = Backbone.View.extend({
 
         initArgs: function(args) {

@@ -23,16 +23,31 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/dwip.css" />
+        <link rel="stylesheet" type="text/css" href="css/topcoat-mobile-dark.css" />
         <script type="text/javascript" src="js/lib/HTML.min.js"></script>
-        <script data-main="js/main" src="js/lib/require.js"></script>
         <title>Hello World</title>
     </head>
-    <body>
-        <div id="main-content" class="content">
+    <body class="content">
+        <div id="main-content" class="max">
             <div class="loading blink height-100">
                 <img src="../../img/loader-big.gif" />
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        } else {
+            onDeviceReady(); //this is the browser
+        }
 
+        function onDeviceReady() {
+                var a = document.createElement('script');
+                a.type = 'text/javascript';
+                a.setAttribute('data-main', 'js/main');
+                a.src = 'js/lib/require.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(a, s);
+            }
+     </script>
 </html>
