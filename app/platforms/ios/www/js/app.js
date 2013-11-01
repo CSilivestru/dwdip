@@ -7,14 +7,9 @@ define([
     var app = {
         // Application Constructor
         initialize: function() {
-            var checkForDevice = setInterval(function() {
-                if (device) {
-                    Router.initialize()
-                    clearInterval(checkForDevice);
-                }
-            }, 100);
-        },
-    }
+            Router.initialize();
+        }
+    };
 
     return app;
 });

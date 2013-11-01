@@ -32,11 +32,12 @@ define([
         },
 
         fadeInViewElements: function(template) {
-            this.$el.css("display", "none");
+            this.$el.addClass("invisible");
             if (template)
                 this.$el.html(template);
 
-            this.$el.fadeIn();
+            this.$el.addClass("opaque")
+                .removeClass("invisible");
         },
         
         close: function() {

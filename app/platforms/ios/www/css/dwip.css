@@ -127,13 +127,12 @@
 
 .half-height {
     height: 49.5%;
-    transition: height 1s
-    transition: opacity 1s
-    background-color: #eee;
+    transition: height 1s, opacity 1s;
+    position: relative;
 }
 
 .half-height-extended {
-    height: 95%;
+    height: 100%;
 }
 
 .half-height-disappear {
@@ -148,8 +147,19 @@
 .action {
     font-size: 5em;
     font-weight: bold;
+    box-sizing: border-box;
+    height: 90%;
 }
 
 .arrows-down {
-    padding-top: 40%;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #ddd;
 }
+
+.arrows-up {
+    position: absolute;
+    top: 0;
+    border-bottom: 1px solid #ddd;
+}
+

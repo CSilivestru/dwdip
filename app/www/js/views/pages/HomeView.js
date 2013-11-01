@@ -1,25 +1,26 @@
 define([
   'baseview',
+  '../partials/FindView',
+  '../partials/ParkView',
   'text!templates/pages/HomeView.html'
-], function(Baseview, homeTemplate){
+], function(Baseview, FindView, ParkView, homeTemplate){
 
   var HomeView = Baseview.extend({
     initialize: function() {
+        
     },
 
     events: {
-        "swipedown": "handleSwipeDown"
-    },
-
-    handleSwipeDown: function(e) {
-        $("#findContainer").addClass("half-height-extended");
-        $(".icon-arrow-down").removeClass("icon-arrow-down")
-            .addClass("icon-arrow-up");
     },
 
     render: function(){
-      this.$el.html(homeTemplate);
-      this.$el.hammer();
+        this.$el.html(homeTemplate);
+
+        var findView = new FindView({el: $("#findContainer")});
+        var parkView = new ParkView({el: $("#parkContainer")});
+
+        findView.render();
+        parkView.render();
     }
 
   });

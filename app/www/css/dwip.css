@@ -30,9 +30,6 @@
     -webkit-animation:fade 3000ms infinite;
 }
 
-.height-100 {
-    height: 100%;
-}
 
 .loading img {
     position: relative;
@@ -75,10 +72,44 @@
     top: 0
 }
 
+.invisible {
+    opacity: 0;
+    transition: opacity 3s;
+}
+
+.opaque {
+    opacity: 1.0;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+
+/********************************
+ * Transitions
+ * *****************************/
+
+.top-transition {
+    transition: top 1s
+}
+
+.bottom-transition {
+    transition: bottom 1s
+}
+
 
 /********************************
  * Step Styles
  * *****************************/
+
+.height-100 {
+    height: 100%;
+}
 
 .tpadding-10 {
     padding-top: 10%;
@@ -125,18 +156,23 @@
  * Home view
  * ******************************/
 
-.half-height {
-    height: 49.5%;
-    transition: height 1s, opacity 1s;
-    position: relative;
+.both-visible {
+    top: -50%;
 }
 
-.half-height-extended {
-    height: 100%;
+.find-visible {
+    top: 0;
 }
 
-.half-height-disappear {
-    opacity: 0;
+.find-top {
+    bottom: 80%;
+}
+
+.park-bottom {
+    top: 80%;
+}
+.park-visible {
+    top: -100%;
 }
 
 .separator {
@@ -144,22 +180,28 @@
     background-color: #bbb;
 }
 
-.action {
+[class*="action"] {
     font-size: 5em;
     font-weight: bold;
     box-sizing: border-box;
-    height: 90%;
+}
+
+.action-top {
+    bottom: 20%;
+}
+
+.action-bottom {
+    top: 20%;
 }
 
 .arrows-down {
-    position: absolute;
     bottom: 0;
     border-top: 1px solid #ddd;
 }
 
 .arrows-up {
-    position: absolute;
     top: 0;
     border-bottom: 1px solid #ddd;
 }
+
 
