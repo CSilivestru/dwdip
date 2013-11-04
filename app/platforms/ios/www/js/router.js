@@ -1,9 +1,6 @@
 define([
-       'zepto',
-       'underscore',
-       'backbone',
        'views/pages/HomeView',
-], function($, _, Backbone, HomeView) {
+], function(HomeView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {

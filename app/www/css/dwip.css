@@ -25,6 +25,23 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.centered {
+    text-align: center;
+}
+
+.button {
+    border-radius: 10px;
+    transition: all .2s linear;
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    opacity: 1.0;
+}
+
+.half-font-size {
+    font-size: 50%;
+}
+
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
@@ -73,8 +90,10 @@
 }
 
 .invisible {
+    -webkit-transition: opacity .2s linear;
+    -moz-transition: opacity .2s linear;
+    -o-transition: opacity .2s linear;
     opacity: 0;
-    transition: opacity 3s;
 }
 
 .opaque {
@@ -89,19 +108,64 @@
     position: absolute;
 }
 
+.loader-image {
+    background-image: url("../img/loader-big.gif");
+    background-size: 32px;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 32px;
+    height: 32px;
+}
+
+.circle {
+    width: 10em; height: 10em; 
+    -webkit-border-radius: 5em; -moz-border-radius: 5em;
+}
+
+.circle-text {
+    text-align: center; margin-top: 4.5em;
+}
+
+.vcentered-icon {
+    margin-top: 25px;
+}
+
 
 /********************************
  * Transitions
  * *****************************/
 
 .top-transition {
-    transition: top 1s
+    -webkit-transition-property: top;
+    transition-property: top;
+    -webkit-transition-duration: .2s;
+    transition-duration: .2s;
+    -webkit-transition-timing-function: linear;
+    transition-timing-function: linear;
 }
 
 .bottom-transition {
-    transition: bottom 1s
+    -webkit-transition-property: bottom;
+    transition-property: bottom;
+    -webkit-transition-duration: .2s;
+    transition-duration: .2s;
+    -webkit-transition-timing-function: linear;
+    transition-timing-function: linear;
+    transition: bottom .5s
 }
 
+
+/********************************
+ * Pure Overrides
+ * *****************************/
+
+.pure-button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(66, 184, 221);
+}
 
 /********************************
  * Step Styles
@@ -132,25 +196,22 @@
 	display: inline-block;
 	width: 32px;
 	height: 32px;
-	background-image: url(../img/sprites.svg);
+	background-image: url(sprites.svg);
 	background-repeat: no-repeat;
 }
 .icon-arrow-down {
 	background-position: 0 0;
 	width: 32px;
 }
-.icon-arrow-down2 {
+.icon-arrow-up {
 	background-position: -48px 0;
 	width: 32px;
 }
-.icon-arrow-up {
+.icon-back {
 	background-position: -96px 0;
 	width: 32px;
 }
-.icon-arrow-up2 {
-	background-position: -144px 0;
-	width: 32px;
-}
+
 
 /*********************************
  * Home view
@@ -187,21 +248,40 @@
 }
 
 .action-top {
-    bottom: 20%;
+    height: 100%;
+    text-align: center;
 }
 
 .action-bottom {
     top: 20%;
 }
 
-.arrows-down {
-    bottom: 0;
-    border-top: 1px solid #ddd;
+.top-button {
+    position: fixed;
+    bottom: 75%;
+    right: 25%;
 }
 
-.arrows-up {
-    top: 0;
-    border-bottom: 1px solid #ddd;
+.top-button.offscreen {
+    bottom: 105%;
+}
+
+.top-button.full {
+    bottom: 85%;
+}
+
+.back {
+    height: 80px;
+    background-color: #eee;
+    width: 100%;
+}
+
+.back-image {
+    background-image: url("../img/loader-big.gif");
+    background-size: 32px;
+    margin: auto;
+    width: 32px;
+    height: 32px;
 }
 
 

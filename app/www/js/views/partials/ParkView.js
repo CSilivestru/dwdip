@@ -10,23 +10,32 @@ define([
     template: _.template(parkTemplate),
 
     events: {
-        "swipeup": "handleSwipeUp",
-        "swipedown": "handleSwipeDown",
+        "tap #parkButton": "showPark",
+        "tap .backToHome": "backToNeutral",
     },
 
-    handleSwipeUp: function(e) {
+    showPark: function(e) {
         $("#home").addClass("park-visible")
             .removeClass("both-visible");
+
+        $("#findButton").addClass("offscreen");
 
         $("#parkText").addClass("park-bottom")
             .removeClass("action-bottom");
 
         $("#parkArrow .icon-arrow-up").removeClass("icon-arrow-up")
             .addClass("icon-arrow-down");
+
+        this.$(".backToHome").addClass("opaque")
+            .removeClass("invisible");
+
+        this.activatePark();
     },
 
-    handleSwipeDown: function(e) {
+    backToNeutral: function(e) {
         if ($("#home").hasClass("park-visible")) {
+            $("#findButton").removeClass("offscreen");
+
             $("#home").addClass("both-visible")
                 .removeClass("park-visible");
             $("#parkText").removeClass("park-bottom")
@@ -35,6 +44,13 @@ define([
 
         $("#parkArrow .icon-arrow-down").removeClass("icon-arrow-down")
             .addClass("icon-arrow-up");
+
+        this.$(".backToHome").addClass("invisible")
+            .removeClass("opaque");
+    },
+
+    activatePark: function() {
+        
     },
 
     render: function(){

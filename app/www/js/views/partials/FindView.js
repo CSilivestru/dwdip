@@ -10,20 +10,23 @@ define([
     template: _.template(findTemplate),
 
     events: {
-        "swipedown": "handleSwipeDown",
-        "swipeup": "handleSwipeUp",
+        "tap #findButton": "showFind",
+        "tap .backToHome": "backToNeutral"
     },
 
-    handleSwipeDown: function(e) {
-        $("#home").addClass("find-visible");
+    showFind: function(e) {
         $("#findText").addClass("find-top")
             .removeClass("action-top");
 
-        $("#findArrow .icon-arrow-down").removeClass("icon-arrow-down")
-            .addClass("icon-arrow-up");
+        $("#findButton").addClass("full");
+
+        $("#home").addClass("find-visible");
+
+        $(".backToHome").addClass("opaque")
+            .removeClass("invisible");
     },
 
-    handleSwipeUp: function(e) {
+    backToNeutral: function(e) {
         if ($("#home").hasClass("find-visible")) {
             $("#home").addClass("both-visible")
                 .removeClass("find-visible");
@@ -31,8 +34,14 @@ define([
             $("#findText").removeClass("find-top")
                 .addClass("action-top");
 
+            $("#findButton").removeClass("full");
+
             $("#findArrow .icon-arrow-up").removeClass("icon-arrow-up")
                 .addClass("icon-arrow-down");
+
+            $(".backToHome").addClass("invisible")
+                .removeClass("opaque");
+
         }
     },
 
