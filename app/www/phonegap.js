@@ -22,8 +22,10 @@
 var CORDOVA_JS_BUILD_LABEL = '3.1.0';
 // file: lib/scripts/require.js
 
-var require,
-    define;
+var custom = {
+    require: {},
+    define: {}
+}
 
 (function () {
     var modules = {},
@@ -43,7 +45,7 @@ var require,
                 if (id.charAt(0) === ".") {
                     resultantId = module.id.slice(0, module.id.lastIndexOf(SEPERATOR)) + SEPERATOR + id.slice(2);
                 }
-                return require(resultantId);
+                return custom.require(resultantId);
             };
         module.exports = {};
         delete module.factory;
@@ -51,7 +53,7 @@ var require,
         return module.exports;
     }
 
-    require = function (id) {
+    custom.require = function (id) {
         if (!modules[id]) {
             throw "module " + id + " not found";
         } else if (id in inProgressModules) {
@@ -71,7 +73,7 @@ var require,
         return modules[id].exports;
     };
 
-    define = function (id, factory) {
+    custom.define = function (id, factory) {
         if (modules[id]) {
             throw "module " + id + " already defined";
         }
@@ -82,21 +84,22 @@ var require,
         };
     };
 
-    define.remove = function (id) {
+    custom.define.remove = function (id) {
         delete modules[id];
     };
 
-    define.moduleMap = modules;
+    custom.define.moduleMap = modules;
 })();
 
 //Export for use in node
-if (typeof module === "object" && typeof require === "function") {
-    module.exports.require = require;
-    module.exports.define = define;
+if (typeof module === "object" && typeof custom.require === "function") {
+    module.exports.custom = {};
+    module.exports.custom.require = custom.require;
+    module.exports.define.define = custom.define
 }
 
 // file: lib/cordova.js
-define("cordova", function(require, exports, module) {
+custom.define("cordova", function(require, exports, module) {
 
 
 var channel = require('cordova/channel');
@@ -170,8 +173,8 @@ function createEvent(type, data) {
 
 
 var cordova = {
-    define:define,
-    require:require,
+    define: custom.define,
+    require: custom.require,
     version:CORDOVA_JS_BUILD_LABEL,
     platformId:platform.id,
     /**
@@ -314,7 +317,7 @@ module.exports = cordova;
 });
 
 // file: lib/common/argscheck.js
-define("cordova/argscheck", function(require, exports, module) {
+custom.define("cordova/argscheck", function(require, exports, module) {
 
 var exec = require('cordova/exec');
 var utils = require('cordova/utils');
@@ -380,7 +383,7 @@ moduleExports.enableChecks = true;
 });
 
 // file: lib/common/base64.js
-define("cordova/base64", function(require, exports, module) {
+custom.define("cordova/base64", function(require, exports, module) {
 
 var base64 = exports;
 
@@ -436,7 +439,7 @@ function uint8ToBase64(rawData) {
 });
 
 // file: lib/common/builder.js
-define("cordova/builder", function(require, exports, module) {
+custom.define("cordova/builder", function(require, exports, module) {
 
 var utils = require('cordova/utils');
 
@@ -549,7 +552,7 @@ exports.replaceHookForTesting = function() {};
 });
 
 // file: lib/common/channel.js
-define("cordova/channel", function(require, exports, module) {
+custom.define("cordova/channel", function(require, exports, module) {
 
 var utils = require('cordova/utils'),
     nextGuid = 1;
@@ -790,7 +793,7 @@ module.exports = channel;
 });
 
 // file: lib/ios/exec.js
-define("cordova/exec", function(require, exports, module) {
+custom.define("cordova/exec", function(require, exports, module) {
 
 /**
  * Creates a gap bridge iframe used to notify the native code about queued
@@ -1022,7 +1025,7 @@ module.exports = iOSExec;
 });
 
 // file: lib/common/init.js
-define("cordova/init", function(require, exports, module) {
+custom.define("cordova/init", function(require, exports, module) {
 
 var channel = require('cordova/channel');
 var cordova = require('cordova');
@@ -1136,7 +1139,7 @@ channel.join(function() {
 });
 
 // file: lib/common/modulemapper.js
-define("cordova/modulemapper", function(require, exports, module) {
+custom.define("cordova/modulemapper", function(require, exports, module) {
 
 var builder = require('cordova/builder'),
     moduleMap = define.moduleMap,
@@ -1193,7 +1196,7 @@ exports.mapModules = function(context) {
     for (var i = 0, len = symbolList.length; i < len; i += 3) {
         var strategy = symbolList[i];
         var moduleName = symbolList[i + 1];
-        var module = require(moduleName);
+        var module = custom.require(moduleName);
         // <runs/>
         if (strategy == 'r') {
             continue;
@@ -1237,7 +1240,7 @@ exports.reset();
 });
 
 // file: lib/ios/platform.js
-define("cordova/platform", function(require, exports, module) {
+custom.define("cordova/platform", function(require, exports, module) {
 
 module.exports = {
     id: 'ios',
@@ -1250,7 +1253,7 @@ module.exports = {
 });
 
 // file: lib/common/pluginloader.js
-define("cordova/pluginloader", function(require, exports, module) {
+custom.define("cordova/pluginloader", function(require, exports, module) {
 
 var modulemapper = require('cordova/modulemapper');
 
@@ -1363,7 +1366,7 @@ exports.load = function(callback) {
 });
 
 // file: lib/common/urlutil.js
-define("cordova/urlutil", function(require, exports, module) {
+custom.define("cordova/urlutil", function(require, exports, module) {
 
 var urlutil = exports;
 var anchorEl = document.createElement('a');
@@ -1380,7 +1383,7 @@ urlutil.makeAbsolute = function(url) {
 });
 
 // file: lib/common/utils.js
-define("cordova/utils", function(require, exports, module) {
+custom.define("cordova/utils", function(require, exports, module) {
 
 var utils = exports;
 
@@ -1549,9 +1552,10 @@ function UUIDcreatePart(length) {
 
 });
 
-window.cordova = require('cordova');
+window.cordova = custom.require('cordova');
 // file: lib/scripts/bootstrap.js
 
-require('cordova/init');
+custom.require('cordova/init');
 
 })();
+

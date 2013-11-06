@@ -1,0 +1,17 @@
+<div id="direction" class="padding-15">
+    Got your location! You're here: <br />
+
+    <div class="location-coords">
+        Lat: <%=location.coords.latitude %> <br />
+        Lon: <%=location.coords.longitude %> <br /><br />
+
+        Measure is accurate to: <%= location.coords.accuracy %> metres.
+    </div>
+</div>
+
+<div id="distance" class="bottom">
+    <p> Just open me back up when you're ready! </p>
+    <button id="OkButton" class="pure-button pure-button-secondary">
+        Got it!
+    </button>
+</div>

@@ -25,6 +25,22 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.centered {
+    text-align: center;
+}
+
+.button {
+    border-radius: 10px;
+    transition: all .2s linear;
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    opacity: 1.0;
+}
+
+.half-font-size {
+}
+
 .blink {
     animation:fade 3000ms infinite;
     -webkit-animation:fade 3000ms infinite;
@@ -33,8 +49,6 @@
 
 .loading img {
     position: relative;
-    top: 45%;
-    left: 45%;
 }
 
 .center {
@@ -64,17 +78,30 @@
 
 .bottom {
     position: absolute;
-    bottom: 0;
+    bottom: 10%;
+    width: 90%;
 }
 
 .top {
     position: absolute;
-    top: 0
+    top: 0px;
+    width: 90%;
+}
+
+.fade-enabled {
+    -webkit-transition: opacity 1s linear;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+}
+
+.transition-enabled {
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    -o-transition: all .2s linear;
 }
 
 .invisible {
     opacity: 0;
-    transition: opacity 3s;
 }
 
 .opaque {
@@ -108,6 +135,32 @@
     text-align: center; margin-top: 4.5em;
 }
 
+.vcentered-icon {
+    margin-top: 25px;
+}
+
+.header {
+    background-color: #eee;
+    padding: 2%;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+}
+
+.main-80 {
+    height: 80%;
+    padding: 10% 5% 0% 5%;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.inline {
+    display: inline;
+}
+
 
 /********************************
  * Transitions
@@ -129,13 +182,36 @@
     transition-duration: .2s;
     -webkit-transition-timing-function: linear;
     transition-timing-function: linear;
-    transition: bottom 1s
+    transition: bottom .5s
 }
 
 
 /********************************
+ * Pure Overrides
+ * *****************************/
+
+.pure-button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(66, 184, 221);
+}
+
+/********************************
  * Step Styles
  * *****************************/
+
+.height-49 {
+    height: 49%;
+}
+
+.height-50 {
+    height: 50%;
+}
+
+.height-80 {
+    height: 80%;
+}
 
 .height-100 {
     height: 100%;
@@ -153,6 +229,10 @@
     width: 100%;
 }
 
+.padding-15 {
+    padding: 15%;
+}
+
 
 /*
 * Sprite Icons
@@ -166,37 +246,28 @@
 	background-repeat: no-repeat;
 }
 .icon-arrow-down {
-    margin-bottom: 10px;
 	background-position: 0 0;
 	width: 32px;
 }
 .icon-arrow-up {
-    margin-top: 10px;
 	background-position: -48px 0;
 	width: 32px;
 }
+.icon-back {
+	background-position: -96px 0;
+	width: 32px;
+}
+
 
 /*********************************
  * Home view
  * ******************************/
 
-.both-visible {
-    top: -50%;
-}
-
-.find-visible {
-    top: 0;
-}
-
-.find-top {
-    bottom: 80%;
-}
-
-.park-bottom {
-    top: 80%;
-}
-.park-visible {
-    top: -100%;
+.main-button {
+    width: 50%;
+    height: 30%;
+    font-size: 1.5em;
+    margin-top: 25%;
 }
 
 .separator {
@@ -204,26 +275,24 @@
     background-color: #bbb;
 }
 
-[class*="action"] {
-    font-size: 5em;
-    font-weight: bold;
+/*********************************
+ * Find view
+ * ******************************/
+
+#arrowContainer {
+    width: 100%;
+    height: 50%;
+    position: relative;
+    padding: 5%;
     box-sizing: border-box;
 }
 
-.action-top {
-    bottom: 20%;
-}
-
-.action-bottom {
-    top: 20%;
-}
-
-.arrows-down {
-    bottom: 10%;
-}
-
-.arrows-up {
-    top: 10%;
+.arrow-heading {
+    background-image: url("../img/arrow-up.png");
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    background-size: cover;
 }
 
 

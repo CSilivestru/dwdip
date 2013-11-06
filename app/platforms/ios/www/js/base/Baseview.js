@@ -28,7 +28,7 @@ define([
         },
 
         fadeInViewElements: function(template) {
-            this.$el.addClass("invisible");
+            this.$el.addClass("invisible").removeClass("opaque");
             if (template)
                 this.$el.html(template);
 

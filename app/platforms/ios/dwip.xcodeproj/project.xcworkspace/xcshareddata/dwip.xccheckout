@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>CEC5A001-35B4-40F9-8C7F-CD78C7F4694F</string>
+	<string>29FC0792-77E7-45DD-B980-0EBBE2EF6ED3</string>
 	<key>IDESourceControlProjectName</key>
 	<string>dwip</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>5CB0F56E-A038-40A9-B6FE-76F45CB81820</key>
+		<key>9BE69834-C494-479F-AD0C-436DA40498BC</key>
 		<string>ssh://github.com/CSilivestru/dwdip.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>app/platforms/ios/dwip.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>5CB0F56E-A038-40A9-B6FE-76F45CB81820</key>
+		<key>9BE69834-C494-479F-AD0C-436DA40498BC</key>
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>5CB0F56E-A038-40A9-B6FE-76F45CB81820</string>
+	<string>9BE69834-C494-479F-AD0C-436DA40498BC</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>5CB0F56E-A038-40A9-B6FE-76F45CB81820</string>
+			<string>9BE69834-C494-479F-AD0C-436DA40498BC</string>
 			<key>IDESourceControlWCCName</key>
 			<string>dwdip</string>
 		</dict>

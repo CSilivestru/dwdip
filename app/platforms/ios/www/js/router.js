@@ -1,10 +1,13 @@
 define([
        'views/pages/HomeView',
-], function(HomeView) {
+       'views/pages/FindView',
+       'views/pages/ParkView',
+], function(HomeView, FindView, ParkView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
+            'find': 'find'
         },
 
         initialize: function() {
@@ -12,8 +15,13 @@ define([
         },
 
         home: function() {
-            var homeView = new HomeView({el: this.mainEl});
+            var homeView = new HomeView({el: this.mainEl, router: this});
             AppView.showView(homeView);
+        },
+
+        find: function() {
+            var findView = new FindView({el: this.mainEl, router: this});
+            AppView.showView(findView);
         }
     });
 

@@ -43,7 +43,7 @@ define('baseview',[
         },
 
         fadeInViewElements: function(template) {
-            this.$el.addClass("invisible");
+            this.$el.addClass("invisible").removeClass("opaque");
             if (template)
                 this.$el.html(template);
 
@@ -181,54 +181,162 @@ define('baseview',[
 });
 
 
-define('text!templates/partials/FindView.html',[],function () { return '<div id="findText" class="action absolute action-top bottom-transition width-100 center tpadding-10">\n    Find\n</div>\n<div id="findArrow" class="arrows-down absolute center width-100">\n    <span class="icon-arrow-down"> </span>\n</div>\n\n';});
+define('text!templates/pages/HomeView.html',[],function () { return '<div id="home" class="height-100 relative top-transition">\n    <div id="findContainer" class="centered height-49 swipeableDown relative">\n        <button class="main-button pure-button pure-button-secondary half-font-size button">\n            Find \n        </button>\n    </div>\n    <div class="separator" />\n    <div id="parkContainer" class="centered height-49 swipeableDown relative">\n        <button class="main-button pure-button pure-button-secondary half-font-size button">\n            Park \n        </button>\n    </div>\n</div>\n\n';});
 
-define('views/partials/FindView',[
+define('views/pages/HomeView',[
   'baseview',
-  'text!templates/partials/FindView.html'
-], function(Baseview, findTemplate){
+  'text!templates/pages/HomeView.html'
+], function(Baseview, homeTemplate){
+
+  var HomeView = Baseview.extend({
+    initialize: function(args) {
+        this.initArgs(args);
+        
+    },
+
+    events: {
+        "tap    #findContainer":    "showFind",
+        "tap    #parkContainer":    "showPark"
+    },
+
+    showFind: function() {
+        this.router.navigate("find", true);
+        console.log("find");
+    },
+
+    showPark: function() {
+        this.router.navigate("park", true);
+        console.log("park");
+    },
+
+    render: function(){
+        this.fadeInViewElements(homeTemplate);
+        this.$el.hammer();
+    }
+
+  });
+
+  return HomeView;
+});
+
+define('utils',[], function() {
+    return {
+        getGeoDistance: function(currentLocation, destination) {
+            //Following the haversine formula
+            console.log("Calculating distance between");
+            console.log(currentLocation);
+            console.log(destination);
+
+            var EARTHRADIUS = 6371; //in KM
+            var distanceLat = (destination.latitude - currentLocation.latitude).toRad();
+            var distanceLon = (destination.longitude - currentLocation.longitude).toRad();
+            var currentLat = currentLocation.latitude.toRad();
+            var destinationLat = destination.latitude.toRad();
+
+            var a = Math.sin(distanceLat/2) * Math.sin(distanceLat/2) +
+                    Math.sin(distanceLon/2) * Math.sin(distanceLon/2) * Math.cos(currentLat) * Math.cos(destinationLat);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            return EARTHRADIUS * c;
+        },
+
+        getGeoBearing: function(currentLocation, destination) {
+            //Following the Forward Azimuth formula
+            var EARTHRADIUS = 6371; //in KM
+            var distanceLat = (destination.latitude - currentLocation.latitude).toRad();
+            var distanceLon = (destination.longitude - currentLocation.longitude).toRad();
+            var currentLat = currentLocation.latitude.toRad();
+            var destinationLat = destination.latitude.toRad();
+
+            var y = Math.sin(distanceLon) * Math.cos(destinationLat);
+            var x = Math.cos(currentLat)*Math.sin(destinationLat) -
+                    Math.sin(currentLat)*Math.cos(destinationLat)*Math.cos(distanceLon);
+            return Math.atan2(y, x).toDeg();
+        }
+    };
+});
+
+
+define('text!templates/pages/FindView.html',[],function () { return '<div class="width-100 header">\n    <div id="back" class="inline">\n        <span class="icon-back back-button" />\n    </div>\n</div>\n\n<div class="title">\n    <h2> Find Your Car! </h2>\n</div>\n\n<div id="findInfoContainer" class="main-80">\n</div>\n';});
+
+define('text!templates/partials/FindCar.html',[],function () { return '<div id="direction" class="padding-15 height-80">\n    <div> Just Follow the arrow to your car! </div>\n    <div id="arrowContainer">\n        <div class="arrow-heading transition-enabled"> </div>\n    </div>\n</div>\n\n<div id="distance" class="bottom">\n    <span id="distanceLeft"> </span> m\n</div>\n\n';});
+
+define('views/pages/FindView',[
+  'baseview',
+  '../../utils',
+  'text!templates/pages/FindView.html',
+  'text!templates/partials/FindCar.html',
+  'text!templates/partials/loading.html'
+], function(Baseview, Utils, findTemplate, locationFoundTemplate, loadingTemplate){
 
   var FindView = Baseview.extend({
-    initialize: function() {
+    initialize: function(args) {
+        this.initArgs(args);
+        this.continuousBearingRefresh = null;
     },
 
     template: _.template(findTemplate),
 
     events: {
-        "swipedown": "showFind",
-        "swipeup": "backToNeutral",
-        "doubletap": "doubleTap"
+        "tap    #back": "goBack"
     },
 
-    doubleTap: function(e) {
-        console.log("YAY!")
+    goBack: function(e) {
+        this.router.navigate("", true);
     },
 
-    showFind: function(e) {
-        $("#home").addClass("find-visible");
-        $("#findText").addClass("find-top")
-            .removeClass("action-top");
-
-        $("#findArrow .icon-arrow-down").removeClass("icon-arrow-down")
-            .addClass("icon-arrow-up");
+    getParkLocation: function(callback) {
+        console.log("Getting park location");
+        callback.call(this, {latitude: 80, longitude: -10});
     },
 
-    backToNeutral: function(e) {
-        if ($("#home").hasClass("find-visible")) {
-            $("#home").addClass("both-visible")
-                .removeClass("find-visible");
+    calculateHeading: function(bearing) {
+        var view = this;
 
-            $("#findText").removeClass("find-top")
-                .addClass("action-top");
+        navigator.geolocation.getCurrentPosition(function(location) {
+            var template = _.template(locationFoundTemplate);
+            this.$("#findInfoContainer").html(_.template(template({location: location})));
 
-            $("#findArrow .icon-arrow-up").removeClass("icon-arrow-up")
-                .addClass("icon-arrow-down");
-        }
+            try {
+                var distance = Utils.getGeoDistance(location.coords, view.parkLocation);
+                var bearingToCar = Utils.getGeoBearing(location.coords, view.parkLocation);
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
+            console.log("bearing: ", bearing);
+            console.log("bearing to car: ", bearingToCar);
+
+            var str = "latitude: " + location.coords.latitude + "\n";
+            str += "longitude: " + location.coords.longitude + "\n";
+
+            var directionToGo = bearingToCar - bearing;
+            view.$(".arrow-heading").css("-webkit-transform", "rotate(" + directionToGo + "deg)");
+            view.$("#distanceLeft").html(distance);
+        }, function(err) {
+            console.log("ERROR GETTING LOCATION: ", err);
+        });
+    },
+
+    onClose: function() {
+        navigator.geolocation.clearWatch(this.geoWatchID);
     },
 
     render: function(){
-      this.fadeInViewElements(findTemplate);
-      this.$el.hammer();
+        var view = this;
+        var geoOptions = { maximumAge: 1000, timeout: 20000, enableHighAccuracy: true }
+        this.fadeInViewElements(findTemplate);
+        this.$("#findInfoContainer").html(loadingTemplate);
+        this.$("#findInfoContainer").append("Getting Position...");
+
+        this.getParkLocation(function(parkLocation) {
+            view.parkLocation = parkLocation;
+
+            navigator.compass.watchHeading(function(heading) {
+                view.calculateHeading(heading.magneticHeading);
+            }, function(err) {
+                alert("ERROR: ", err.message);
+                console.log("Error: ", err);
+            }, {frequency: 1000});
+        });
     }
 
   });
@@ -237,11 +345,11 @@ define('views/partials/FindView',[
 });
 
 
-define('text!templates/partials/ParkView.html',[],function () { return '<div id="parkArrow" class="arrows-up absolute center top-transition width-100">\n    <span class="icon-arrow-up"> </span>\n</div>\n<div id="parkText" class="action absolute action-bottom width-100 top-transition center bpadding-10">\n    Park\n</div>\n\n';});
+define('text!templates/pages/ParkView.html',[],function () { return '<div class="backToHome top back invisible centered">\n    <span class="icon-back vcentered-icon" />\n</div>\n<div id="parkText" class="action absolute action-bottom width-100 top-transition center bpadding-10">\n    <button id="parkButton" class="pure-button pure-button-secondary half-font-size">\n        Park\n    </button>\n</div>\n\n';});
 
-define('views/partials/ParkView',[
+define('views/pages/ParkView',[
   'baseview',
-  'text!templates/partials/ParkView.html'
+  'text!templates/pages/ParkView.html'
 ], function(Baseview, parkTemplate){
 
   var ParkView = Baseview.extend({
@@ -251,13 +359,15 @@ define('views/partials/ParkView',[
     template: _.template(parkTemplate),
 
     events: {
-        "swipeup": "showPark",
-        "swipedown": "backToNeutral",
+        "tap #parkButton": "showPark",
+        "tap .backToHome": "backToNeutral",
     },
 
     showPark: function(e) {
         $("#home").addClass("park-visible")
             .removeClass("both-visible");
+
+        $("#findButton").addClass("offscreen");
 
         $("#parkText").addClass("park-bottom")
             .removeClass("action-bottom");
@@ -265,11 +375,15 @@ define('views/partials/ParkView',[
         $("#parkArrow .icon-arrow-up").removeClass("icon-arrow-up")
             .addClass("icon-arrow-down");
 
+        this.$(".backToHome").addClass("opaque")
+            .removeClass("invisible");
+
         this.activatePark();
     },
 
     backToNeutral: function(e) {
         if ($("#home").hasClass("park-visible")) {
+            $("#findButton").removeClass("offscreen");
             $("#home").addClass("both-visible")
                 .removeClass("park-visible");
             $("#parkText").removeClass("park-bottom")
@@ -278,6 +392,9 @@ define('views/partials/ParkView',[
 
         $("#parkArrow .icon-arrow-down").removeClass("icon-arrow-down")
             .addClass("icon-arrow-up");
+
+        this.$(".backToHome").addClass("invisible")
+            .removeClass("opaque");
     },
 
     activatePark: function() {
@@ -295,45 +412,16 @@ define('views/partials/ParkView',[
 });
 
 
-define('text!templates/pages/HomeView.html',[],function () { return '<div id="home" class="height-100 relative top-transition both-visible">\n    <div id="findContainer" class="height-100 swipeableDown relative">\n    </div>\n    <div class="separator" />\n    <div id="parkContainer" class="height-100 swipeableDown relative">\n    </div>\n</div>\n\n';});
-
-define('views/pages/HomeView',[
-  'baseview',
-  '../partials/FindView',
-  '../partials/ParkView',
-  'text!templates/pages/HomeView.html'
-], function(Baseview, FindView, ParkView, homeTemplate){
-
-  var HomeView = Baseview.extend({
-    initialize: function() {
-        
-    },
-
-    events: {
-    },
-
-    render: function(){
-        this.$el.html(homeTemplate);
-
-        var findView = new FindView({el: $("#findContainer")});
-        var parkView = new ParkView({el: $("#parkContainer")});
-
-        findView.render();
-        parkView.render();
-    }
-
-  });
-
-  return HomeView;
-});
-
 define('router',[
        'views/pages/HomeView',
-], function(HomeView) {
+       'views/pages/FindView',
+       'views/pages/ParkView',
+], function(HomeView, FindView, ParkView) {
 
     var AppRouter = Backbone.Router.extend({
         routes: {
             '': 'home',
+            'find': 'find'
         },
 
         initialize: function() {
@@ -341,8 +429,13 @@ define('router',[
         },
 
         home: function() {
-            var homeView = new HomeView({el: this.mainEl});
+            var homeView = new HomeView({el: this.mainEl, router: this});
             AppView.showView(homeView);
+        },
+
+        find: function() {
+            var findView = new FindView({el: this.mainEl, router: this});
+            AppView.showView(findView);
         }
     });
 
@@ -398,11 +491,21 @@ requirejs.config({
 });
 
     define('main',['app'], function(App){
-        alert("At Require");
+        //Overrides:
+
+        //Converts numeric degrees to radians
+        Number.prototype.toRad = function() {
+            return this * Math.PI / 180;
+        }
+
+        // Converts radians to numeric (signed) degrees
+        Number.prototype.toDeg = function() {
+            return this * 180 / Math.PI;
+        }
+
         // The "app" dependency is passed in as "App"
         // Again, the other dependencies passed in are not "AMD" therefore don't pass a parameter to this function
         App.initialize();
-        alert("After Require");
     })
 
 ;

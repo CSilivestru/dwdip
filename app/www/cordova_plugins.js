@@ -1,3 +1,4 @@
-cordova.define('cordova/plugin_list', function(require, exports, module) {
-module.exports = []
+cordova.define('cordova/plugin_list', function(customRequire, exports, module) {
+module.exports = ['org.apache.cordova.device-orientation',
+  'org.apache.cordova.geolocation']
 });

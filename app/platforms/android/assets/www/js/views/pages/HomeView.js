@@ -1,26 +1,32 @@
 define([
   'baseview',
-  '../partials/FindView',
-  '../partials/ParkView',
   'text!templates/pages/HomeView.html'
-], function(Baseview, FindView, ParkView, homeTemplate){
+], function(Baseview, homeTemplate){
 
   var HomeView = Baseview.extend({
-    initialize: function() {
+    initialize: function(args) {
+        this.initArgs(args);
         
     },
 
     events: {
+        "tap    #findContainer":    "showFind",
+        "tap    #parkContainer":    "showPark"
+    },
+
+    showFind: function() {
+        this.router.navigate("find", true);
+        console.log("find");
+    },
+
+    showPark: function() {
+        this.router.navigate("park", true);
+        console.log("park");
     },
 
     render: function(){
-        this.$el.html(homeTemplate);
-
-        var findView = new FindView({el: $("#findContainer")});
-        var parkView = new ParkView({el: $("#parkContainer")});
-
-        findView.render();
-        parkView.render();
+        this.fadeInViewElements(homeTemplate);
+        this.$el.hammer();
     }
 
   });

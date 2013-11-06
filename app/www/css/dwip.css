@@ -39,7 +39,6 @@
 }
 
 .half-font-size {
-    font-size: 50%;
 }
 
 .blink {
@@ -50,8 +49,6 @@
 
 .loading img {
     position: relative;
-    top: 45%;
-    left: 45%;
 }
 
 .center {
@@ -81,18 +78,29 @@
 
 .bottom {
     position: absolute;
-    bottom: 0;
+    bottom: 10%;
+    width: 90%;
 }
 
 .top {
     position: absolute;
-    top: 0
+    top: 0px;
+    width: 90%;
+}
+
+.fade-enabled {
+    -webkit-transition: opacity 1s linear;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+}
+
+.transition-enabled {
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    -o-transition: all .2s linear;
 }
 
 .invisible {
-    -webkit-transition: opacity .2s linear;
-    -moz-transition: opacity .2s linear;
-    -o-transition: opacity .2s linear;
     opacity: 0;
 }
 
@@ -129,6 +137,28 @@
 
 .vcentered-icon {
     margin-top: 25px;
+}
+
+.header {
+    background-color: #eee;
+    padding: 2%;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+}
+
+.main-80 {
+    height: 80%;
+    padding: 10% 5% 0% 5%;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.inline {
+    display: inline;
 }
 
 
@@ -171,6 +201,18 @@
  * Step Styles
  * *****************************/
 
+.height-49 {
+    height: 49%;
+}
+
+.height-50 {
+    height: 50%;
+}
+
+.height-80 {
+    height: 80%;
+}
+
 .height-100 {
     height: 100%;
 }
@@ -185,6 +227,10 @@
 
 .width-100 {
     width: 100%;
+}
+
+.padding-15 {
+    padding: 15%;
 }
 
 
@@ -217,23 +263,11 @@
  * Home view
  * ******************************/
 
-.both-visible {
-    top: -50%;
-}
-
-.find-visible {
-    top: 0;
-}
-
-.find-top {
-    bottom: 80%;
-}
-
-.park-bottom {
-    top: 80%;
-}
-.park-visible {
-    top: -100%;
+.main-button {
+    width: 50%;
+    height: 30%;
+    font-size: 1.5em;
+    margin-top: 25%;
 }
 
 .separator {
@@ -241,47 +275,24 @@
     background-color: #bbb;
 }
 
-[class*="action"] {
-    font-size: 5em;
-    font-weight: bold;
+/*********************************
+ * Find view
+ * ******************************/
+
+#arrowContainer {
+    width: 100%;
+    height: 50%;
+    position: relative;
+    padding: 5%;
     box-sizing: border-box;
 }
 
-.action-top {
+.arrow-heading {
+    background-image: url("../img/arrow-up.png");
+    position: absolute;
+    width: 90%;
     height: 100%;
-    text-align: center;
-}
-
-.action-bottom {
-    top: 20%;
-}
-
-.top-button {
-    position: fixed;
-    bottom: 75%;
-    right: 25%;
-}
-
-.top-button.offscreen {
-    bottom: 105%;
-}
-
-.top-button.full {
-    bottom: 85%;
-}
-
-.back {
-    height: 80px;
-    background-color: #eee;
-    width: 100%;
-}
-
-.back-image {
-    background-image: url("../img/loader-big.gif");
-    background-size: 32px;
-    margin: auto;
-    width: 32px;
-    height: 32px;
+    background-size: cover;
 }
 
 
